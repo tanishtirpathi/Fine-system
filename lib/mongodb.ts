@@ -22,9 +22,9 @@ if (process.env.NODE_ENV === 'development') {
   }
   clientPromise = global._mongoClientPromise;
 } else {
-  // In production mode, create a new client
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
+  console.log('Connected to MongoDB');
 }
 
 export default clientPromise;
