@@ -1,65 +1,66 @@
-import Image from "next/image";
+import React from 'react';
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col items-center justify-center p-6 selection:bg-blue-500/30 selection:text-blue-200">
+      {/* Background patterns */}
+      <div className="fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,50,0.5),transparent_70%)] pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-4xl flex flex-col items-center gap-12 text-center">
+        <header className="space-y-4">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight bg-gradient-to-b from-white to-neutral-500 bg-clip-text text-transparent">
+            College Finer
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+          <div className="space-y-2">
+            <p className="text-xl md:text-2xl font-medium text-neutral-400">
+              Pay and collect fines with ease
+            </p>
+            <p className="max-w-xl mx-auto text-sm md:text-base text-neutral-500 leading-relaxed">
+              This web app is designed to streamline fine collection and management for colleges,
+              ensuring better organization and absolute efficiency.
+            </p>
+          </div>
+        </header>
+
+        <div className="w-full max-w-sm flex flex-col items-center gap-4">
+          <button className=" cursor-pointer group relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-white hover:text-black active:scale-95 shadow-lg shadow-black/20">
+
+            <span className="relative z-10 flex items-center gap-2">
+              Login Portal
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+
+            <div className="absolute inset-0 -z-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          </button>
+          <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-medium">Secure Access</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+        <section className="w-full space-y-8 mt-12">
+          <div className="flex items-center gap-4">
+            <div className="h-px flex-1 bg-neutral-800"></div>
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">Resources</h2>
+            <div className="h-px flex-1 bg-neutral-800"></div>
+          </div>
+
+          <div className="group relative w-full aspect-video md:aspect-[21/9] rounded-3xl bg-neutral-900 border border-neutral-800/50 overflow-hidden cursor-pointer transition-all hover:border-neutral-700/50">
+            <div className="absolute inset-0 bg-neutral-800/20 group-hover:bg-transparent transition-colors"></div>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform group-hover:scale-110">
+                <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
+              </div>
+              <p className="text-sm font-medium text-neutral-400">Watch Demo: How it works</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer className="fixed bottom-8 text-neutral-700 text-[10px] uppercase tracking-[0.3em]">
+        Efficient Management • Transparent Process
+      </footer>
     </div>
   );
-}
+};
+
+export default HomePage;
