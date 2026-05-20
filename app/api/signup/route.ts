@@ -1,10 +1,24 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongoose';
 import StudentModel from '@/model/students.model';
+import { isLoggedIn } from '@/app/middleware/isLoggedIn';
+import { isTeacher } from '@/app/middleware/isTeacher';
 
 export async function POST(request: Request) {
+    //logc now 
+    // db connection 
+    // check if logged in
+    // console the lgoged in user
+    // check if teacher
+    // if no error 
+    // if yes then create student
     try {
         await dbConnect();
+
+        const user = await isLoggedIn();
+         console.log("Logged In User:", user);
+         isTeacher(user);
+
 
         const { name, rollNo, password  , fatherNo , department } = await request.json();
 
