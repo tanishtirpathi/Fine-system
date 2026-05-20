@@ -3,7 +3,6 @@ import dbConnect from '@/lib/mongoose';
 import StudentModel from '@/model/students.model';
 import { isLoggedIn } from '@/app/middleware/isLoggedIn';
 import { isTeacher } from '@/app/middleware/isTeacher';
-
 export async function POST(request: Request) {
     //logc now 
     // db connection 
