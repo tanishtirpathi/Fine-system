@@ -1,40 +1,72 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const [role, setRole] = useState('student');
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const token = Cookies.get('token');
+      if (!token) return; 
+
+      try {
+        const response = await fetch('/api/verify-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.role === 'teacher') router.push('/teacher/dashboard');
+          else if (data.role === 'student') router.push('/student/dashboard');
+        } else {
+          Cookies.remove('token');
+          // ✅ Already on login page, no redirect needed
+        }
+      } catch (err) {
+        console.error('Error verifying token:', err);
+        Cookies.remove('token');
+      }
+    };
+
+    checkUser();
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true); // ✅ Start loading
 
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier, password, role }),
       });
 
       if (response.ok) {
         alert('Login successful!');
-        if (role === 'teacher') {
-          router.push('/teacher/dashboard');
-        } else if (role === 'student') {
-          router.push('/student/dashboard');
-        }
+        if (role === 'teacher') router.push('/teacher/dashboard');
+        else if (role === 'student') router.push('/student/dashboard');
       } else {
         const data = await response.json();
         setError(data.message || 'Login failed');
       }
     } catch (err) {
       setError('An unexpected error occurred');
+    } finally {
+      setLoading(false); // ✅ Stop loading
     }
   };
 
@@ -51,10 +83,7 @@ export default function Login() {
             <select
               id="role"
               value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-                setIdentifier(''); // Reset identifier when role changes
-              }}
+              onChange={(e) => { setRole(e.target.value); setIdentifier(''); }}
               className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="student">Student</option>
@@ -87,14 +116,13 @@ export default function Login() {
               required
             />
           </div>
+          {/* ✅ No redundant onClick, correct label logic, disabled while loading */}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onClick={() => {
-              setError('');
-            }}
+            disabled={loading}
+            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            {error ? 'Login' : 'Logging in...'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>

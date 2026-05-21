@@ -1,27 +1,7 @@
-"use client"
-import React, { useEffect, useState } from 'react';
+import { getMe } from "@/lib/apis";
 
-const TeacherDashboard = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch('/api/me');
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data);
-        } else {
-          console.error('Failed to fetch user details');
-        }
-      } catch (error) {
-        console.error('An error occurred while fetching user details:', error);
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
-
+export default async function DashboardPage() {
+  const user = await getMe();
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -38,4 +18,3 @@ const TeacherDashboard = () => {
   );
 };
 
-export default TeacherDashboard;

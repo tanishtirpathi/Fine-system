@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import isTeacher from '@/app/middleware/isTeacher';
+import {isTeacher} from '@/app/middleware/isTeacher';
 import Student from '@/model/students.model';
 
 export async function GET(req: Request) {
