@@ -1,6 +1,11 @@
+"use client";
 import React from 'react';
+import { useRouter } from 'next/navigation';
+
 
 const HomePage = () => {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col items-center justify-center p-6 selection:bg-blue-500/30 selection:text-blue-200">
       {/* Background patterns */}
@@ -23,7 +28,7 @@ const HomePage = () => {
         </header>
 
         <div className="w-full max-w-sm flex flex-col items-center gap-4">
-          <button className=" cursor-pointer group relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-white hover:text-black active:scale-95 shadow-lg shadow-black/20">
+        <button onClick={() => router.push('/login')} className=" cursor-pointer group relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-white hover:text-black active:scale-95 shadow-lg shadow-black/20">
 
             <span className="relative z-10 flex items-center gap-2">
               Login Portal
