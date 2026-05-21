@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongoose';
+import dbConnect from '@/lib/server/mongoose';
 import StudentModel from '@/model/students.model';
 import { isLoggedIn } from '@/app/middleware/isLoggedIn';
 import { isTeacher } from '@/app/middleware/isTeacher';

@@ -1,129 +1,149 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
+import { verifyToken, loginUser } from "@/lib/client/api";
 
 export default function Login() {
-  const [role, setRole] = useState('student');
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [role, setRole] = useState("student");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
-  // Auto-redirect if already logged in
+  // CHECK USER LOGIN
   useEffect(() => {
     const checkUser = async () => {
-      const token = Cookies.get('token');
-      if (!token) return; 
+      const token = Cookies.get("token");
+
+      if (!token) return;
 
       try {
-        const response = await fetch('/api/verify-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const data = await verifyToken(token);
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.role === 'teacher') router.push('/teacher/dashboard');
-          else if (data.role === 'student') router.push('/student/dashboard');
-        } else {
-          Cookies.remove('token');
-          // ✅ Already on login page, no redirect needed
+        if (data.role === "teacher") {
+          router.push("/teacher/dashboard");
+        } else if (data.role === "student") {
+          router.push("/student/dashboard");
         }
-      } catch (err) {
-        console.error('Error verifying token:', err);
-        Cookies.remove('token');
+      } catch (error) {
+        console.error(error);
+        Cookies.remove("token");
       }
     };
 
     checkUser();
   }, [router]);
 
+  // HANDLE LOGIN
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true); // ✅ Start loading
+
+    setError("");
+    setLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password, role }),
+      await loginUser({
+        identifier,
+        password,
+        role,
       });
 
-      if (response.ok) {
-        alert('Login successful!');
-        if (role === 'teacher') router.push('/teacher/dashboard');
-        else if (role === 'student') router.push('/student/dashboard');
+      alert("Login successful!");
+
+      if (role === "teacher") {
+        router.push("/teacher/dashboard");
       } else {
-        const data = await response.json();
-        setError(data.message || 'Login failed');
+        router.push("/student/dashboard");
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (error: any) {
+      setError(error.message || "Something went wrong");
     } finally {
-      setLoading(false); // ✅ Stop loading
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="w-full max-w-md p-8 bg-white/10 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-white mb-6">Login</h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        
+        <h2 className="text-2xl font-bold text-center text-white mb-6">
+          Login
+        </h2>
+
+        {error && (
+          <p className="text-red-500 text-center mb-4">
+            {error}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit}>
+
+          {/* ROLE */}
           <div className="mb-4">
-            <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Role
             </label>
+
             <select
-              id="role"
               value={role}
-              onChange={(e) => { setRole(e.target.value); setIdentifier(''); }}
+              onChange={(e) => {
+                setRole(e.target.value);
+                setIdentifier("");
+              }}
               className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
             </select>
           </div>
+
+          {/* IDENTIFIER */}
           <div className="mb-4">
-            <label htmlFor="identifier" className="block text-sm font-medium text-gray-300 mb-2">
-              {role === 'student' ? 'Roll Number' : 'Email Address'}
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              {role === "student"
+                ? "Roll Number"
+                : "Email Address"}
             </label>
+
             <input
-              type={role === 'student' ? 'text' : 'email'}
-              id="identifier"
+              type={role === "student" ? "text" : "email"}
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          {/* PASSWORD */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
+
             <input
               type="password"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          {/* ✅ No redundant onClick, correct label logic, disabled while loading */}
+
+          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition disabled:opacity-50"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
+
         </form>
       </div>
     </div>

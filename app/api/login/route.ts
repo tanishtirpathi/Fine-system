@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import dbConnect from '@/lib/mongoose';
+import dbConnect from '@/lib/server/mongoose';
 import StudentModel from '@/model/students.model';
 import TeacherModel from '@/model/teachers.model';
 import { Student } from '@/types/student.types';

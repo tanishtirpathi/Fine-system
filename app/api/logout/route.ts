@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongoose';
+import dbConnect from '@/lib/server/mongoose';
 import { isLoggedIn } from '@/app/middleware/isLoggedIn';
 export async function POST() {
   try {

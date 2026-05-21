@@ -19,3 +19,21 @@ export async function getMe() {
 
   return res.json();
 }
+
+export async function allStudents() {
+
+  const cookieStore = await cookies();
+  const response = await fetch(`${BASE_URL}/allstudent`, {
+    method: "POST",
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch students");
+  }
+
+  return response.json();
+}

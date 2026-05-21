@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Teacher from '@/model/teachers.model';
-import dbConnect from '@/lib/mongoose';
+import dbConnect from '@/lib/server/mongoose';
 import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
