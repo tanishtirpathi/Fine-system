@@ -1,71 +1,123 @@
 "use client";
-import React from 'react';
-import { useRouter } from 'next/navigation';
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { COLLEGE } from "@/lib/college-brand";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-const HomePage = () => {
+const FEATURES = [
+  {
+    title: "Faculty control",
+    description: "Teachers manage fines, student records, and bulk clearance from one dashboard.",
+  },
+  {
+    title: "Student transparency",
+    description: "Students sign in with roll number to view status and payment obligations.",
+  },
+  {
+    title: "Secure by design",
+    description: "Role-based access ensures only authorized faculty can modify records.",
+  },
+] as const;
+
+export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col items-center justify-center p-6 selection:bg-blue-500/30 selection:text-blue-200">
-      {/* Background patterns */}
-      <div className="fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,50,0.5),transparent_70%)] pointer-events-none"></div>
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] dark:opacity-[0.2]"
+        aria-hidden
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-[var(--accent)]/10 blur-3xl"
+        aria-hidden
+      />
 
-      <div className="relative z-10 w-full max-w-4xl flex flex-col items-center gap-12 text-center">
-        <header className="space-y-4">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight bg-gradient-to-b from-white to-neutral-500 bg-clip-text text-transparent">
-            College Finer
-          </h1>
-          <div className="space-y-2">
-            <p className="text-xl md:text-2xl font-medium text-neutral-400">
-              Pay and collect fines with ease
-            </p>
-            <p className="max-w-xl mx-auto text-sm md:text-base text-neutral-500 leading-relaxed">
-              This web app is designed to streamline fine collection and management for colleges,
-              ensuring better organization and absolute efficiency.
-            </p>
+      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 sm:px-8">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-muted)] text-[var(--accent)]">
+            <ShieldIcon />
           </div>
-        </header>
-
-        <div className="w-full max-w-sm flex flex-col items-center gap-4">
-        <button onClick={() => router.push('/login')} className=" cursor-pointer group relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-7 py-3 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-white hover:text-black active:scale-95 shadow-lg shadow-black/20">
-
-            <span className="relative z-10 flex items-center gap-2">
-              Login Portal
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </span>
-
-            <div className="absolute inset-0 -z-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          </button>
-          <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-medium">Secure Access</p>
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+              {COLLEGE.shortName}
+            </p>
+            <p className="text-sm font-semibold text-[var(--foreground)]">{COLLEGE.name}</p>
+          </div>
         </div>
+        <ThemeToggle />
+      </header>
 
-        <section className="w-full space-y-8 mt-12">
-          <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-neutral-800"></div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-600">Resources</h2>
-            <div className="h-px flex-1 bg-neutral-800"></div>
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-8">
+        <section className="mx-auto max-w-2xl">
+          <p className="text-sm font-medium text-[var(--accent)]">Academic Year {COLLEGE.academicYear}</p>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
+            {COLLEGE.systemName}
+          </h1>
+          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-[var(--muted)] sm:text-lg">
+            {COLLEGE.tagline}. A focused portal for colleges to record, track, and settle student fines with
+            clarity and control.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => router.push("/login")}
+              className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-foreground)] transition hover:opacity-90 active:scale-[0.98]"
+            >
+              Sign in to portal
+              <ArrowIcon />
+            </button>
+            <Link
+              href="/login"
+              className="text-sm font-medium text-[var(--muted)] underline-offset-4 transition hover:text-[var(--foreground)] hover:underline"
+            >
+              Faculty or student access
+            </Link>
           </div>
 
-          <div className="group relative w-full aspect-video md:aspect-[21/9] rounded-3xl bg-neutral-900 border border-neutral-800/50 overflow-hidden cursor-pointer transition-all hover:border-neutral-700/50">
-            <div className="absolute inset-0 bg-neutral-800/20 group-hover:bg-transparent transition-colors"></div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform group-hover:scale-110">
-                <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
-              </div>
-              <p className="text-sm font-medium text-neutral-400">Watch Demo: How it works</p>
-            </div>
+          <div className="mx-auto mt-8 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--muted)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+            Encrypted sessions · Role-based permissions
           </div>
         </section>
-      </div>
 
-      <footer className="fixed bottom-8 text-neutral-700 text-[10px] uppercase tracking-[0.3em]">
-        Efficient Management • Transparent Process
-      </footer>
+        <section className="mt-20 grid w-full max-w-4xl gap-4 sm:grid-cols-3">
+          {FEATURES.map((feature) => (
+            <article
+              key={feature.title}
+              className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center transition hover:border-[var(--accent)]/30"
+            >
+              <div className="mx-auto mb-4 h-px w-8 bg-[var(--accent)]" />
+              <h2 className="text-base font-semibold text-[var(--foreground)]">{feature.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{feature.description}</p>
+            </article>
+          ))}
+        </section>
+      </main>
     </div>
   );
-};
+}
 
-export default HomePage;
+function ShieldIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+      <path d="M12 3L4 7v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V7l-8-4z" />
+      <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
