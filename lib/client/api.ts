@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:3000/api";
-    
+
 export async function verifyToken(token: string) {
   const response = await fetch(`${BASE_URL}/verify-token`, {
     method: "POST",
@@ -38,14 +38,27 @@ export async function loginUser(data: {
   return result;
 }
 
-export type StudentFineUpdate = {
+export type StudentUpdate = {
+  name: string;
+  rollNo: string;
+  fatherNo: string;
+  department: string;
+  semester: number;
   fineAmount: number;
   fineStatus: "paid" | "unpaid";
-  isCleared: boolean;
+  password?: string;
 };
 
-export async function updateStudentRecord(rollNo: string, data: StudentFineUpdate) {
-  const response = await fetch(`/api/student/${encodeURIComponent(rollNo)}`, {
+export type StudentUpdateResult = {
+  student: import("@/types/student.types").Student;
+  previousRollNo: string;
+};
+
+export async function updateStudentRecord(
+  currentRollNo: string,
+  data: StudentUpdate,
+): Promise<StudentUpdateResult> {
+  const response = await fetch(`/api/student/${encodeURIComponent(currentRollNo)}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -58,5 +71,23 @@ export async function updateStudentRecord(rollNo: string, data: StudentFineUpdat
     throw new Error(result.message || "Failed to update student");
   }
 
-  return result.student as import("@/types/student.types").Student;
+  return {
+    student: result.student,
+    previousRollNo: result.previousRollNo ?? currentRollNo,
+  };
+}
+
+export async function clearAllStudentFines() {
+  const response = await fetch("/api/student/all-clear", {
+    method: "POST",
+    credentials: "include",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to clear all fines");
+  }
+
+  return result.students as import("@/types/student.types").Student[];
 }

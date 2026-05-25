@@ -4,17 +4,44 @@ import StudentModel from "@/model/students.model";
 import { requireTeacher } from "@/lib/server/auth";
 
 type UpdateBody = {
+  name?: unknown;
+  rollNo?: unknown;
+  password?: unknown;
+  fatherNo?: unknown;
+  department?: unknown;
+  semester?: unknown;
   fineAmount?: unknown;
   fineStatus?: unknown;
-  isCleared?: unknown;
 };
 
 function parseUpdateBody(body: UpdateBody) {
-  if (body.fineAmount === undefined || body.fineStatus === undefined || body.isCleared === undefined) {
-    return { error: "fineAmount, fineStatus, and isCleared are required" };
+  if (
+    body.name === undefined ||
+    body.rollNo === undefined ||
+    body.fatherNo === undefined ||
+    body.department === undefined ||
+    body.semester === undefined ||
+    body.fineAmount === undefined ||
+    body.fineStatus === undefined
+  ) {
+    return { error: "name, rollNo, fatherNo, department, semester, fineAmount, and fineStatus are required" };
   }
 
+  const name = String(body.name).trim();
+  const rollNo = String(body.rollNo).trim();
+  const fatherNo = String(body.fatherNo).trim();
+  const department = String(body.department).trim();
+  const semester = Number(body.semester);
   const fineAmount = Number(body.fineAmount);
+
+  if (!name || !rollNo || !fatherNo || !department) {
+    return { error: "name, rollNo, fatherNo, and department cannot be empty" };
+  }
+
+  if (!Number.isInteger(semester) || semester < 1) {
+    return { error: "semester must be a positive whole number" };
+  }
+
   if (!Number.isFinite(fineAmount) || fineAmount < 0) {
     return { error: "fineAmount must be a non-negative number" };
   }
@@ -23,15 +50,25 @@ function parseUpdateBody(body: UpdateBody) {
     return { error: "fineStatus must be paid or unpaid" };
   }
 
-  if (typeof body.isCleared !== "boolean") {
-    return { error: "isCleared must be a boolean" };
-  }
+  const password =
+    body.password === undefined || body.password === null || String(body.password).trim() === ""
+      ? undefined
+      : String(body.password);
+
+  const roundedFine = Math.round(fineAmount);
+  const fineStatus = body.fineStatus as "paid" | "unpaid";
 
   return {
     data: {
-      fineAmount: Math.round(fineAmount),
-      fineStatus: body.fineStatus as "paid" | "unpaid",
-      isCleared: body.isCleared,
+      name,
+      rollNo,
+      fatherNo,
+      department,
+      semester,
+      fineAmount: roundedFine,
+      fineStatus,
+      password,
+      isCleared: roundedFine === 0 || fineStatus === "paid",
     },
   };
 }
@@ -46,9 +83,9 @@ export async function PATCH(
   }
 
   const { rollNo } = await context.params;
-  const decodedRollNo = decodeURIComponent(rollNo);
+  const currentRollNo = decodeURIComponent(rollNo);
 
-  if (!decodedRollNo) {
+  if (!currentRollNo) {
     return NextResponse.json({ message: "Roll number is required" }, { status: 400 });
   }
 
@@ -67,13 +104,31 @@ export async function PATCH(
   try {
     await dbConnect();
 
+    if (parsed.data.rollNo !== currentRollNo) {
+      const duplicate = await StudentModel.findOne({ rollNo: parsed.data.rollNo }).lean();
+      if (duplicate) {
+        return NextResponse.json({ message: "Roll number already in use" }, { status: 409 });
+      }
+    }
+
+    const updateFields: Record<string, unknown> = {
+      name: parsed.data.name,
+      rollNo: parsed.data.rollNo,
+      fatherNo: parsed.data.fatherNo,
+      department: parsed.data.department,
+      semester: parsed.data.semester,
+      fineAmount: parsed.data.fineAmount,
+      fineStatus: parsed.data.fineStatus,
+      isCleared: parsed.data.isCleared,
+    };
+
+    if (parsed.data.password !== undefined) {
+      updateFields.password = parsed.data.password;
+    }
+
     const updated = await StudentModel.findOneAndUpdate(
-      { rollNo: decodedRollNo },
-      {
-        fineAmount: parsed.data.fineAmount,
-        fineStatus: parsed.data.fineStatus,
-        isCleared: parsed.data.isCleared,
-      },
+      { rollNo: currentRollNo },
+      updateFields,
       { new: true, runValidators: true },
     )
       .select("-password")
@@ -86,6 +141,7 @@ export async function PATCH(
     return NextResponse.json({
       message: "Student record updated",
       student: updated,
+      previousRollNo: currentRollNo,
     });
   } catch (error) {
     console.error("Error updating student:", error);

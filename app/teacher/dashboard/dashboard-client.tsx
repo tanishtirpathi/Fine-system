@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { Student } from "@/types/student.types";
 import { COLLEGE } from "@/lib/college-brand";
+import { clearAllStudentFines } from "@/lib/client/api";
 import {
   CollegeBadge,
   CollegeButton,
@@ -48,8 +49,8 @@ export default function DashboardClient({ user, students: initialStudents }: Das
   const [semester, setSemester] = useState("all");
   const [department, setDepartment] = useState("all");
   const [fineStatus, setFineStatus] = useState("all");
-  const [cleared, setCleared] = useState("all");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isClearingAll, setIsClearingAll] = useState(false);
 
   useEffect(() => {
     setStudentList(initialStudents);
@@ -86,17 +87,35 @@ export default function DashboardClient({ user, students: initialStudents }: Das
     }
   };
 
-  const handleStudentSaved = (updated: Student) => {
+  const handleStudentSaved = (updated: Student, previousRollNo: string) => {
     setStudentList((current) =>
-      current.map((s) => (s.rollNo === updated.rollNo ? { ...s, ...updated } : s)),
+      current.map((s) => (s.rollNo === previousRollNo ? { ...s, ...updated } : s)),
     );
     router.refresh();
+  };
+
+  const handleAllClear = async () => {
+    const confirmed = window.confirm(
+      "Clear all fines? Every student will have fine amount ₹0 and paid status.",
+    );
+    if (!confirmed) return;
+
+    setIsClearingAll(true);
+    try {
+      const students = await clearAllStudentFines();
+      setStudentList(students);
+      router.refresh();
+    } catch (clearError) {
+      alert(clearError instanceof Error ? clearError.message : "Failed to clear all fines");
+    } finally {
+      setIsClearingAll(false);
+    }
   };
 
   const filteredStudents = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    return studentList.filter((student) => {
+    const filtered = studentList.filter((student) => {
       const matchesSearch =
         query.length === 0 ||
         student.name.toLowerCase().includes(query) ||
@@ -106,31 +125,23 @@ export default function DashboardClient({ user, students: initialStudents }: Das
       const matchesSemester = semester === "all" || String(student.semester) === semester;
       const matchesDepartment = department === "all" || student.department === department;
       const matchesFineStatus = fineStatus === "all" || student.fineStatus === fineStatus;
-      const matchesCleared =
-        cleared === "all" ||
-        (cleared === "cleared" && student.isCleared) ||
-        (cleared === "pending" && !student.isCleared);
 
-      return (
-        matchesSearch &&
-        matchesSemester &&
-        matchesDepartment &&
-        matchesFineStatus &&
-        matchesCleared
-      );
+      return matchesSearch && matchesSemester && matchesDepartment && matchesFineStatus;
     });
-  }, [search, semester, department, fineStatus, cleared, studentList]);
+
+    return filtered.sort((a, b) => b.fineAmount - a.fineAmount);
+  }, [search, semester, department, fineStatus, studentList]);
 
   const totalStudents = studentList.length;
   const unpaidStudents = studentList.filter((student) => student.fineStatus === "unpaid").length;
-  const clearedStudents = studentList.filter((student) => student.isCleared).length;
+  const paidStudents = studentList.filter((student) => student.fineStatus === "paid").length;
   const pendingAmount = studentList.reduce((sum, student) => {
     return student.fineStatus === "unpaid" ? sum + student.fineAmount : sum;
   }, 0);
 
   const topPendingStudents = [...studentList]
-    .filter((student) => student.fineAmount > 0)
     .sort((a, b) => b.fineAmount - a.fineAmount)
+    .filter((student) => student.fineAmount > 0)
     .slice(0, 3);
 
   return (
@@ -149,10 +160,10 @@ export default function DashboardClient({ user, students: initialStudents }: Das
             <CollegeBadge>Faculty dashboard • AY {COLLEGE.academicYear}</CollegeBadge>
             <div>
               <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
-                Fine & clearance overview
+                Fine management overview
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-                Manage student fines by department and semester. Click a student name to edit their record.
+                Students are sorted by highest fine first. Click a name to edit their record.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -167,6 +178,13 @@ export default function DashboardClient({ user, students: initialStudents }: Das
               <CollegeButton variant="primary" onClick={() => router.push("/teacher/studentadd")}>
                 Add student
               </CollegeButton>
+              <CollegeButton
+                variant="secondary"
+                onClick={handleAllClear}
+                disabled={isClearingAll || totalStudents === 0}
+              >
+                {isClearingAll ? "Clearing…" : "All clear"}
+              </CollegeButton>
               <CollegeButton variant="ghost" onClick={logout} disabled={isLoggingOut}>
                 {isLoggingOut ? "Signing out…" : "Sign out"}
               </CollegeButton>
@@ -176,7 +194,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
           <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[400px] xl:grid-cols-2">
             <CollegeStatCard label="Pending amount" value={formatCurrency(pendingAmount)} />
             <CollegeStatCard label="Unpaid fines" value={String(unpaidStudents)} />
-            <CollegeStatCard label="Cleared students" value={String(clearedStudents)} />
+            <CollegeStatCard label="Paid records" value={String(paidStudents)} />
             <CollegeStatCard label="Active semesters" value={String(semesters.length)} />
           </div>
         </div>
@@ -188,7 +206,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
             <div>
               <h3 className="text-lg font-semibold text-[var(--foreground)]">Student registry</h3>
               <p className="mt-1 text-sm text-[var(--muted)]">
-                Filter the list or click a name to update fine and clearance.
+                Sorted by highest fine. Click a name to edit profile and payment details.
               </p>
             </div>
             <p className="text-sm text-[var(--muted)]">
@@ -197,7 +215,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
             </p>
           </div>
 
-          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <label className="space-y-2 text-sm text-[var(--muted)] xl:col-span-2">
               <span>Search</span>
               <CollegeInput
@@ -231,21 +249,12 @@ export default function DashboardClient({ user, students: initialStudents }: Das
               </CollegeSelect>
             </label>
 
-            <label className="space-y-2 text-sm text-[var(--muted)]">
+            <label className="space-y-2 text-sm text-[var(--muted)] md:col-span-2 xl:col-span-4">
               <span>Fine status</span>
               <CollegeSelect value={fineStatus} onChange={(event) => setFineStatus(event.target.value)}>
                 <option value="all">All statuses</option>
                 <option value="paid">Paid</option>
                 <option value="unpaid">Unpaid</option>
-              </CollegeSelect>
-            </label>
-
-            <label className="space-y-2 text-sm text-[var(--muted)]">
-              <span>Clearance</span>
-              <CollegeSelect value={cleared} onChange={(event) => setCleared(event.target.value)}>
-                <option value="all">All students</option>
-                <option value="cleared">Cleared</option>
-                <option value="pending">Pending</option>
               </CollegeSelect>
             </label>
           </div>
@@ -260,14 +269,13 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                     <th className="px-4 py-3">Semester</th>
                     <th className="px-4 py-3">Fine</th>
                     <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Clearance</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border)] bg-[var(--surface)] text-sm">
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student) => {
-                      const resolvedFineStatus = student.fineAmount === 0 ? "paid" : student.fineStatus;
-                      const resolvedCleared = student.fineAmount === 0 ? true : student.isCleared;
+                      const displayStatus =
+                        student.fineAmount === 0 ? "paid" : student.fineStatus;
 
                       return (
                         <tr key={student.rollNo} className="transition hover:bg-[var(--surface-muted)]">
@@ -289,13 +297,8 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                             {formatCurrency(student.fineAmount)}
                           </td>
                           <td className="px-4 py-4">
-                            <StatusBadge tone={resolvedFineStatus === "paid" ? "success" : "warning"}>
-                              {resolvedFineStatus}
-                            </StatusBadge>
-                          </td>
-                          <td className="px-4 py-4">
-                            <StatusBadge tone={resolvedCleared ? "success" : "neutral"}>
-                              {resolvedCleared ? "cleared" : "pending"}
+                            <StatusBadge tone={displayStatus === "paid" ? "success" : "warning"}>
+                              {displayStatus}
                             </StatusBadge>
                           </td>
                         </tr>
@@ -303,7 +306,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                     })
                   ) : (
                     <tr>
-                      <td colSpan={6} className="px-4 py-14 text-center text-[var(--muted)]">
+                      <td colSpan={5} className="px-4 py-14 text-center text-[var(--muted)]">
                         No students match the current filters.
                       </td>
                     </tr>
@@ -320,7 +323,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
             <div className="mt-4 space-y-3 text-sm">
               <InsightRow label="Total students" value={String(totalStudents)} />
               <InsightRow label="Pending fines" value={String(unpaidStudents)} />
-              <InsightRow label="Cleared records" value={String(clearedStudents)} />
+              <InsightRow label="Paid records" value={String(paidStudents)} />
               <InsightRow label="Departments" value={String(departments.length)} />
             </div>
           </CollegePanel>
@@ -358,7 +361,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-[var(--muted)]">No fine records yet.</p>
+                <p className="text-sm text-[var(--muted)]">No outstanding fines.</p>
               )}
             </div>
           </CollegePanel>
