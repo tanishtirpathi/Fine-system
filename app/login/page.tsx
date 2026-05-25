@@ -3,36 +3,32 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
 import { verifyToken, loginUser } from "@/lib/client/api";
+import { CollegeLoginShell } from "@/components/college/college-login-shell";
+import { CollegeButton, CollegeInput, CollegeSelect } from "@/components/college/college-ui";
 
 export default function Login() {
   const [role, setRole] = useState("student");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
-  // CHECK USER LOGIN
   useEffect(() => {
     const checkUser = async () => {
       const token = Cookies.get("token");
-
       if (!token) return;
 
       try {
         const data = await verifyToken(token);
-
         if (data.role === "teacher") {
           router.push("/teacher/dashboard");
         } else if (data.role === "student") {
           router.push("/student/dashboard");
         }
-      } catch (error) {
-        console.error(error);
+      } catch (checkError) {
+        console.error(checkError);
         Cookies.remove("token");
       }
     };
@@ -40,112 +36,74 @@ export default function Login() {
     checkUser();
   }, [router]);
 
-  // HANDLE LOGIN
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setError("");
     setLoading(true);
 
     try {
-      await loginUser({
-        identifier,
-        password,
-        role,
-      });
-
-      alert("Login successful!");
+      await loginUser({ identifier, password, role });
 
       if (role === "teacher") {
         router.push("/teacher/dashboard");
       } else {
         router.push("/student/dashboard");
       }
-    } catch (error: any) {
-      setError(error.message || "Something went wrong");
+      router.refresh();
+    } catch (loginError: unknown) {
+      setError(loginError instanceof Error ? loginError.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="w-full max-w-md p-8 bg-white/10 rounded-lg shadow-md">
-        
-        <h2 className="text-2xl font-bold text-center text-white mb-6">
-          Login
-        </h2>
+    <CollegeLoginShell>
+      {error ? (
+        <p className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-600 dark:text-red-300">
+          {error}
+        </p>
+      ) : null}
 
-        {error && (
-          <p className="text-red-500 text-center mb-4">
-            {error}
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit}>
-
-          {/* ROLE */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Role
-            </label>
-
-            <select
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-                setIdentifier("");
-              }}
-              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-            </select>
-          </div>
-
-          {/* IDENTIFIER */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              {role === "student"
-                ? "Roll Number"
-                : "Email Address"}
-            </label>
-
-            <input
-              type={role === "student" ? "text" : "email"}
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              required
-              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* PASSWORD */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Password
-            </label>
-
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-2 text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* BUTTON */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition disabled:opacity-50"
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block space-y-2 text-sm text-[var(--muted)]">
+          <span>Sign in as</span>
+          <CollegeSelect
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+              setIdentifier("");
+            }}
           >
-            {loading ? "Logging in..." : "Login"}
-          </button>
+            <option value="student">Student</option>
+            <option value="teacher">Faculty / Teacher</option>
+          </CollegeSelect>
+        </label>
 
-        </form>
-      </div>
-    </div>
+        <label className="block space-y-2 text-sm text-[var(--muted)]">
+          <span>{role === "student" ? "Roll number" : "Faculty email"}</span>
+          <CollegeInput
+            type={role === "student" ? "text" : "email"}
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            required
+          />
+        </label>
+
+        <label className="block space-y-2 text-sm text-[var(--muted)]">
+          <span>Password</span>
+          <CollegeInput
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        <CollegeButton type="submit" variant="primary" className="w-full py-3" disabled={loading}>
+          {loading ? "Signing in…" : "Sign in securely"}
+        </CollegeButton>
+      </form>
+    </CollegeLoginShell>
   );
 }
