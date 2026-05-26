@@ -38,3 +38,34 @@ export async function requireTeacher(): Promise<
     };
   }
 }
+
+export async function requireStudent(): Promise<
+  { user: AuthUser } | { response: NextResponse }
+> {
+  try {
+    const decoded = await isLoggedIn();
+
+    if (typeof decoded !== "object" || !decoded || !("role" in decoded)) {
+      return {
+        response: NextResponse.json({ message: "Invalid session" }, { status: 401 }),
+      };
+    }
+
+    const user = decoded as AuthUser;
+
+    if (user.role !== "student") {
+      return {
+        response: NextResponse.json(
+          { message: "Forbidden: only students can perform this action" },
+          { status: 403 },
+        ),
+      };
+    }
+
+    return { user };
+  } catch {
+    return {
+      response: NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+    };
+  }
+}

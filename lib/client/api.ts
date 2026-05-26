@@ -91,3 +91,25 @@ export async function clearAllStudentFines() {
 
   return result.students as import("@/types/student.types").Student[];
 }
+
+export type StudentDashboardResponse = {
+  meRollNo: string;
+  me: import("@/types/student.types").Student | null;
+  students: import("@/types/student.types").Student[];
+};
+
+export async function getStudentDashboard(): Promise<StudentDashboardResponse> {
+  const response = await fetch("/api/student/dashboard", {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to load student dashboard");
+  }
+
+  return result as StudentDashboardResponse;
+}

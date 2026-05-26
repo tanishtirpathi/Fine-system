@@ -8,5 +8,11 @@ export interface Student {
   fineAmount: number;
   fineStatus: 'paid' | 'unpaid';
   isCleared: boolean;
+  /**
+   * Set by the teacher when they update fines / student record.
+   * Used by the student dashboard to show who to contact.
+   */
+  updatedByTeacherName?: string;
+  updatedByTeacherPhoneNo?: string;
   createdAt: Date;
 }

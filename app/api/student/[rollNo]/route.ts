@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/server/mongoose";
 import StudentModel from "@/model/students.model";
+import TeacherModel from "@/model/teachers.model";
 import { requireTeacher } from "@/lib/server/auth";
 
 type UpdateBody = {
@@ -104,6 +105,14 @@ export async function PATCH(
   try {
     await dbConnect();
 
+    const teacher = await TeacherModel.findById(auth.user.userId)
+      .select("name phoneNo")
+      .lean();
+
+    if (!teacher) {
+      return NextResponse.json({ message: "Teacher not found" }, { status: 404 });
+    }
+
     if (parsed.data.rollNo !== currentRollNo) {
       const duplicate = await StudentModel.findOne({ rollNo: parsed.data.rollNo }).lean();
       if (duplicate) {
@@ -120,6 +129,8 @@ export async function PATCH(
       fineAmount: parsed.data.fineAmount,
       fineStatus: parsed.data.fineStatus,
       isCleared: parsed.data.isCleared,
+      updatedByTeacherName: teacher.name,
+      updatedByTeacherPhoneNo: teacher.phoneNo,
     };
 
     if (parsed.data.password !== undefined) {

@@ -10,7 +10,9 @@ const StudentSchema: Schema = new Schema({
     semester: { type: Number, required: true },
     fineAmount: { type: Number, required: true },
     fineStatus: { type: String, enum: ['paid', 'unpaid'], required: true },
-    isCleared: { type: Boolean, required: true }
+    isCleared: { type: Boolean, required: true },
+    updatedByTeacherName: { type: String, required: false, default: null },
+    updatedByTeacherPhoneNo: { type: String, required: false, default: null }
 }, {
     timestamps: true,
 });
