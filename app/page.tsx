@@ -74,12 +74,6 @@ export default function HomePage() {
               Sign in to portal
               <ArrowIcon />
             </button>
-            <Link
-              href="/login"
-              className="text-sm font-medium text-[var(--muted)] underline-offset-4 transition hover:text-[var(--foreground)] hover:underline"
-            >
-              Faculty or student access
-            </Link>
           </div>
 
           <div className="mx-auto mt-8 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--muted)]">
