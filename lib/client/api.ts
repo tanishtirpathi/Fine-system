@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "/api";
 
 export async function verifyToken(token: string) {
   const response = await fetch(`${BASE_URL}/verify-token`, {
@@ -21,7 +21,7 @@ export async function loginUser(data: {
   password: string;
   role: string;
 }) {
-  const response = await fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`/api/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

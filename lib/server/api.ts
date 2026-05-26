@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "/api";
 
 export async function getMe() {
 
