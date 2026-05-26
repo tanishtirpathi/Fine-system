@@ -5,8 +5,6 @@ export async function POST() {
   try {
     await dbConnect();
     const user = await isLoggedIn();
-
-    console.log("Logged In User:", user);
     // Clear the JWT cookie by setting it to an empty value and an expired date
     const response = NextResponse.json(
       { message: 'Logout successful' } , user ? { status: 200 } : { status: 401 });

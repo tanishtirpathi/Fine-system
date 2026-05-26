@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	CollegeBadge,
@@ -8,15 +7,9 @@ import {
 	SecureBadge,
 } from "@/components/college/college-ui";
 import { COLLEGE } from "@/lib/college-brand";
-import { getMe } from "@/lib/server/api";
 
 export default async function StudentPayPage() {
-	try {
-		await getMe();
-	} catch {
-		redirect("/login");
-	}
-
+	
 	return (
 		<div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
 			<header className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6">

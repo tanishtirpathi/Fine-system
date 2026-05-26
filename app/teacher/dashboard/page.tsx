@@ -1,10 +1,23 @@
+import { redirect } from "next/navigation";
 import { getMe, allStudents } from "@/lib/server/api";
 import DashboardClient from "./dashboard-client";
 
 export default async function DashboardPage() {
-  const user = await getMe();
-  const students = await allStudents();
+  
+    const user = await getMe();
 
-  return <DashboardClient user={user} students={students ?? []} />;
+    if (!user) {
+      console.log("error: no user");
+      redirect("/login");
+    }
+
+    const students = await allStudents();
+
+    return (
+      <DashboardClient
+        user={user}
+        students={students ?? []}
+      />
+    );
+
 }
-

@@ -15,7 +15,6 @@ export async function POST(request: Request) {
         await dbConnect();
 
         const user = await isLoggedIn();
-         console.log("Logged In User:", user);
          isTeacher(user);
 
 
