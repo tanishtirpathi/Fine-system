@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { Student } from "@/types/student.types";
@@ -120,22 +121,56 @@ export default function StudentDashboardPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <header className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-muted)] text-[var(--accent)]">
-            <ShieldIcon />
-          </div>
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-              {COLLEGE.shortName} • Student
-            </p>
-            <p className="text-sm font-semibold">{COLLEGE.name}</p>
+      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--background)]/90 backdrop-blur-md">
+        <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6">
+          <div className="flex flex-col gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-4 shadow-sm shadow-black/5 dark:shadow-black/20 sm:px-5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-muted)] text-[var(--accent)]">
+                  <ShieldIcon />
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
+                    {COLLEGE.shortName} • Student
+                  </p>
+                  <p className="text-sm font-semibold text-[var(--foreground)]">{COLLEGE.name}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <ThemeToggle />
+                <Link
+                  href="/student/pay"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--accent)] bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--accent-foreground)] transition hover:opacity-90"
+                >
+                  <PayIcon />
+                  Pay fine
+                </Link>
+                <CollegeButton variant="ghost" onClick={logout} disabled={isLoggingOut}>
+                  {isLoggingOut ? "Signing out…" : "Sign out"}
+                </CollegeButton>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 border-t border-[var(--border)] pt-4">
+              <Link
+                href="/student/dashboard"
+                className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-muted)] px-3.5 py-1.5 text-xs font-medium text-[var(--accent)]"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/student/pay"
+                className="rounded-full border border-[var(--border)] bg-[var(--surface-muted)] px-3.5 py-1.5 text-xs font-medium text-[var(--muted)] transition hover:border-[var(--accent)]/40 hover:text-[var(--foreground)]"
+              >
+                Pay fine
+              </Link>
+              <span className="rounded-full border border-[var(--border)] bg-[var(--surface-muted)] px-3.5 py-1.5 text-xs text-[var(--muted)]">
+                View fines and payment status
+              </span>
+            </div>
           </div>
         </div>
-        <ThemeToggle />
-         <CollegeButton variant="ghost" onClick={logout} disabled={isLoggingOut}>
-                       {isLoggingOut ? "Signing out…" : "Sign out"}
-                     </CollegeButton>
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6">
@@ -283,6 +318,15 @@ function ShieldIcon() {
     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
       <path d="M12 3L4 7v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V7l-8-4z" />
       <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function PayIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M12 5v14" strokeLinecap="round" />
+      <path d="M8 9.5C8 7.57 9.79 6 12 6s4 1.57 4 3.5S14.21 13 12 13s-4 1.57-4 3.5S9.79 20 12 20s4-1.57 4-3.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

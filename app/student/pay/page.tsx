@@ -83,7 +83,7 @@ export default async function StudentPayPage() {
 							<div className="absolute inset-x-0 top-0 h-1 bg-[var(--accent)]" aria-hidden />
 							<div className="flex items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4">
 								<Image
-									src="/qr.png"
+									src="/qr/QR.webp"
 									alt="Payment QR code"
 									width={320}
 									height={320}
