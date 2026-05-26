@@ -1,7 +1,5 @@
-const BASE_URL = "/api";
-
 export async function verifyToken(token: string) {
-  const response = await fetch(`${BASE_URL}/verify-token`, {
+  const response = await fetch(`/api/verify-token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

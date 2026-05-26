@@ -1,12 +1,11 @@
 import { cookies } from "next/headers";
 
-const BASE_URL = "/api";
 
 export async function getMe() {
 
   const cookieStore = await cookies();
 
-  const res = await fetch(`${BASE_URL}/me`, {
+  const res = await fetch(`/api/me`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -23,7 +22,7 @@ export async function getMe() {
 export async function allStudents() {
 
   const cookieStore = await cookies();
-  const response = await fetch(`${BASE_URL}/allstudent`, {
+  const response = await fetch(`/api/allstudent`, {
     method: "POST",
     headers: {
       Cookie: cookieStore.toString(),
