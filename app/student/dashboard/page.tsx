@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { Student } from "@/types/student.types";
 import { getStudentDashboard } from "@/lib/client/api";
@@ -42,11 +42,13 @@ function FineStatusBadge({ fineStatus }: { fineStatus: Student["fineStatus"] }) 
 }
 
 export default function StudentDashboardPage() {
+    const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [students, setStudents] = useState<Student[]>([]);
   const [me, setMe] = useState<Student | null>(null);
   const [query, setQuery] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [department, setDepartment] = useState("all");
 
   useEffect(() => {
@@ -75,6 +77,25 @@ export default function StudentDashboardPage() {
     };
   }, []);
 
+   const logout = async () => {
+    setIsLoggingOut(true);
+
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      router.push("/login");
+      router.refresh();
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
   const departments = useMemo(() => {
     return [...new Set(students.map((s) => s.department).filter(Boolean))].sort();
   }, [students]);
@@ -112,6 +133,9 @@ export default function StudentDashboardPage() {
           </div>
         </div>
         <ThemeToggle />
+         <CollegeButton variant="ghost" onClick={logout} disabled={isLoggingOut}>
+                       {isLoggingOut ? "Signing out…" : "Sign out"}
+                     </CollegeButton>
       </header>
 
       <main className="mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6">
