@@ -9,7 +9,7 @@ export function CollegePanel({
 }) {
   return (
     <section
-      className={`rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm shadow-black/5 dark:shadow-black/20 sm:p-8 ${className}`}
+      className={`rounded-2xl  p-6 sm:p-8 ${className}`}
     >
       {children}
     </section>
