@@ -26,11 +26,6 @@ export function CollegeLoginShell({ children }: { children: ReactNode }) {
           <ThemeToggle />
         </div>
 
-        <div className="text-center">
-          <h1 className="text-2xl font-light font-serif italic  text-[var(--foreground)]">Portal sign in</h1>
-
-        </div>
-
         <div className="rounded-2xl p-6 shadow-lg shadow-black/5 dark:shadow-black/25 sm:p-8">
           {children}
         </div>

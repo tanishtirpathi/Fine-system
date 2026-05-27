@@ -14,10 +14,20 @@ import {
   CollegeSelect,
 } from "@/components/college/college-ui";
 
+import {
+  ShieldCheck,
+  GraduationCap,
+  Eye,
+  EyeOff,
+  ArrowRight,
+} from "lucide-react";
+
 export default function Login() {
   const [role, setRole] = useState("student");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -79,22 +89,22 @@ export default function Login() {
 
   return (
     <CollegeLoginShell>
-      <div className="mx-auto w-full max-w-md">
-        <div className="rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur-xl">
-          
-          {/* heading */}
-          <div className="mb-8">
- 
+      <div className="relative mx-auto w-full max-w-md">
+        {/* glow */}
+        <div className="absolute inset-0 -z-10 rounded-[40px] bg-white/5 blur-3xl" />
 
-            <h1 className="text-3xl text-center font-semibold tracking-tight text-white">
+        <div className="overflow-hidden rounded-[32px] border border-white/10 bg-black/70 p-8 shadow-2xl backdrop-blur-2xl dark:bg-white/80">
+
+          {/* heading */}
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-semibold tracking-tight text-white dark:text-black">
               Welcome back
             </h1>
-
           </div>
 
           {/* error */}
           {error && (
-            <div className="mb-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+            <div className="mb-5 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300 dark:text-red-600">
               {error}
             </div>
           )}
@@ -102,9 +112,10 @@ export default function Login() {
           {/* form */}
           <form onSubmit={handleSubmit} className="space-y-5">
 
+            {/* role */}
             <div>
-              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
-                Role
+              <label className="mb-2 block text-xs font-medium uppercase tracking-[0.2em] text-white/60 dark:text-black/60">
+                Select Role
               </label>
 
               <CollegeSelect
@@ -113,15 +124,16 @@ export default function Login() {
                   setRole(e.target.value);
                   setIdentifier("");
                 }}
-                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white"
+                className="h-13 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-white backdrop-blur-xl transition-all focus:border-white/20 focus:ring-0 dark:border-black/10 dark:bg-black/5 dark:text-black"
               >
                 <option value="student">Student</option>
                 <option value="teacher">Faculty / Teacher</option>
               </CollegeSelect>
             </div>
 
+            {/* identifier */}
             <div>
-              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-[0.2em] text-white/60 dark:text-black/60">
                 {role === "student"
                   ? "Roll Number"
                   : "Faculty Email"}
@@ -132,36 +144,66 @@ export default function Login() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 required
-                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white placeholder:text-white/20"
+                placeholder={
+                  role === "student"
+                    ? "Enter your roll number"
+                    : "Enter your email"
+                }
+                className="h-13 rounded-2xl border border-white/10 bg-white/5 px-4 text-white placeholder:text-white/25 transition-all focus:border-white/20 focus:ring-0 dark:border-black/10 dark:bg-black/5 dark:text-black dark:placeholder:text-black/30"
               />
             </div>
 
+            {/* password */}
             <div>
-              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-[0.2em] text-white/60 dark:text-black/60">
                 Password
               </label>
 
-              <CollegeInput
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white placeholder:text-white/20"
-              />
+              <div className="relative">
+                <CollegeInput
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                  className="h-13 rounded-2xl border border-white/10 bg-white/5 px-4 pr-12 text-white placeholder:text-white/25 transition-all focus:border-white/20 focus:ring-0 dark:border-black/10 dark:bg-black/5 dark:text-black dark:placeholder:text-black/30"
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 transition hover:text-white dark:text-black/40 dark:hover:text-black"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
             </div>
 
+            {/* submit */}
             <CollegeButton
               type="submit"
               disabled={loading}
-              className="mt-2 h-12 w-full rounded-2xl cursor-pointer bg-white text-black transition-all hover:bg-white/90"
+              className="group mt-3 h-13 w-full rounded-2xl bg-white text-black transition-all duration-300 hover:scale-[1.01] hover:bg-zinc-200 dark:bg-black dark:text-white dark:hover:bg-zinc-900"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              <span className="flex items-center justify-center gap-2">
+                {loading ? "Signing in..." : "Sign in"}
+
+                {!loading && (
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                )}
+              </span>
             </CollegeButton>
           </form>
 
           {/* footer */}
-          <div className="mt-6 border-t border-white/10 pt-5 text-center">
-            <p className="text-xs text-white/35">
+          <div className="mt-8 border-t border-white/10 pt-5 text-center dark:border-black/10">
+            <p className="text-xs tracking-wide text-white/30 dark:text-black/35">
               Authorized students & faculty only
             </p>
           </div>

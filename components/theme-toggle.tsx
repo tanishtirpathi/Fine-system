@@ -10,7 +10,9 @@ export function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] transition hover:border-[var(--accent)] hover:text-[var(--foreground)]"
+      className="inline-flex items-center gap-2 rounded-lg 
+      border border-[var(--foreground)]/10 bg-[var(--surface)] px-3 py-1.5 text-xs font-medium
+      text-[var(--foreground)] transition hover:border-[var(--foreground)]/50 hover:text-[var(--foreground)]"
     >
       {theme === "dark" ? (
         <>
