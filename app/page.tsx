@@ -1,117 +1,120 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { COLLEGE } from "@/lib/college-brand";
 import { ThemeToggle } from "@/components/theme-toggle";
-
-const FEATURES = [
-  {
-    title: "Faculty control",
-    description: "Teachers manage fines, student records, and bulk clearance from one dashboard.",
-  },
-  {
-    title: "Student transparency",
-    description: "Students sign in with roll number to view status and payment obligations.",
-  },
-  {
-    title: "Secure by design",
-    description: "Role-based access ensures only authorized faculty can modify records.",
-  },
-] as const;
-
+import { Meteors } from "@/components/ui/meteors"
 export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] dark:opacity-[0.2]"
-        aria-hidden
-        style={{
-          backgroundImage:
-            "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-[var(--accent)]/10 blur-3xl"
-        aria-hidden
-      />
+    <div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+      
+      {/* Grid */}  <Meteors />
 
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 sm:px-8">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-muted)] text-[var(--accent)]">
-            <ShieldIcon />
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+      </div>
+
+      {/* Header */}
+      <header className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] backdrop-blur-xl shadow-lg">
+            <div className="h-4 w-4 rounded-full bg-[var(--accent)] shadow-[0_0_20px_var(--accent)]" />
           </div>
+
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--accent)]">
-              {COLLEGE.shortName}
+            <h2 className="text-sm font-semibold tracking-wide">
+              {COLLEGE.name}
+            </h2>
+            <p className="text-xs text-[var(--muted)]">
+              Fine Management Platform
             </p>
-            <p className="text-sm font-semibold text-[var(--foreground)]">{COLLEGE.name}</p>
           </div>
         </div>
+
         <ThemeToggle />
       </header>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-8">
-        <section className="mx-auto max-w-2xl">
-          <p className="text-sm font-medium text-[var(--accent)]">Academic Year {COLLEGE.academicYear}</p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
-            {COLLEGE.systemName}
+      {/* Main */}
+      <main className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-6 pt-10 pb-20">
+
+        {/* Hero */}
+        <section className="flex max-w-5xl flex-col items-center text-center">
+          
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-1.5 backdrop-blur-xl">
+            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-xs tracking-[0.2em] text-[var(--muted)] uppercase">
+              {COLLEGE.tagline}
+            </span>
+          </div>
+
+          <h1 className="mt-8 max-w-4xl text-2xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-5xl">
+            Modern fine management
+            <span className="block font-serif italic text-[var(--accent)]">
+              for colleges
+            </span>
           </h1>
-          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-            {COLLEGE.tagline}. A focused portal for colleges to record, track, and settle student fines with
-            clarity and control.
+
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)] sm:text-xl">
+            Handle fines, student clearances, and academic transparency with a
+            focused platform designed for speed, simplicity, and clarity.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          {/* Buttons */}
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <button
-              type="button"
               onClick={() => router.push("/login")}
-              className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-foreground)] transition hover:opacity-90 active:scale-[0.98]"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[var(--accent)] px-8 py-4 text-sm font-semibold text-[var(--accent-foreground)] transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl"
             >
-              Sign in to portal
-              <ArrowIcon />
+              <span className="relative z-10">Login on dashboard</span>
+
+              <div className="absolute inset-0 translate-y-full bg-white/10 transition-transform duration-300 group-hover:translate-y-0" />
             </button>
           </div>
+        </section>
 
-          <div className="mx-auto mt-8 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--muted)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-            Encrypted sessions · Role-based permissions
+        {/* Video Section */}
+        <section
+          id="video"
+          className="mt-34 w-full max-w-5xl"
+        >
+          <div className="mb-10 text-center">
+            <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted)]">
+              Product Overview
+            </p>
+
+            
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl">
+            <div className="relative aspect-video bg-black">
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src="https://www.youtube.com/embed/ZUjiWKKv00o?si=pFATIrZTvSiAyxWE"
+                title="Fine Management System overview"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           </div>
         </section>
 
-        <section className="mt-20 grid w-full max-w-4xl gap-4 sm:grid-cols-3">
-          {FEATURES.map((feature) => (
-            <article
-              key={feature.title}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center transition hover:border-[var(--accent)]/30"
-            >
-              <div className="mx-auto mb-4 h-px w-8 bg-[var(--accent)]" />
-              <h2 className="text-base font-semibold text-[var(--foreground)]">{feature.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{feature.description}</p>
-            </article>
-          ))}
-        </section>
+        {/* Footer */}
+        <footer className="mt-24 border-t border-[var(--border)] pt-8 text-center text-sm text-[var(--muted)] w-full">
+          <p>
+            {COLLEGE.name} • Academic Year {COLLEGE.academicYear}
+          </p>
+        </footer>
       </main>
     </div>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-      <path d="M12 3L4 7v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V7l-8-4z" />
-      <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

@@ -1,7 +1,7 @@
 export const COLLEGE = {
-  name: "FineGuard College",
-  shortName: "FGC",
+  name: "Fine Guardian",
+  shortName: "ABGI",
   tagline: "Student Fine & Clearance Portal",
-  systemName: "Academic Fine Management System",
-  academicYear: "2025–26",
+  systemName: "Fine Management System",
+  academicYear: "2026–27",
 } as const;

@@ -3,9 +3,16 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+
 import { verifyToken, loginUser } from "@/lib/client/api";
+
 import { CollegeLoginShell } from "@/components/college/college-login-shell";
-import { CollegeButton, CollegeInput, CollegeSelect } from "@/components/college/college-ui";
+
+import {
+  CollegeButton,
+  CollegeInput,
+  CollegeSelect,
+} from "@/components/college/college-ui";
 
 export default function Login() {
   const [role, setRole] = useState("student");
@@ -13,22 +20,25 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
       const token = Cookies.get("token");
+
       if (!token) return;
 
       try {
         const data = await verifyToken(token);
+
         if (data.role === "teacher") {
           router.push("/teacher/dashboard");
-        } else if (data.role === "student") {
+        } else {
           router.push("/student/dashboard");
         }
-      } catch (checkError) {
-        console.error(checkError);
+      } catch (err) {
+        console.error(err);
         Cookies.remove("token");
       }
     };
@@ -38,20 +48,30 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
     try {
-      await loginUser({ identifier, password, role });
+      await loginUser({
+        identifier,
+        password,
+        role,
+      });
 
-      if (role === "teacher") {
-        router.push("/teacher/dashboard");
-      } else {
-        router.push("/student/dashboard");
-      }
+      router.push(
+        role === "teacher"
+          ? "/teacher/dashboard"
+          : "/student/dashboard"
+      );
+
       router.refresh();
-    } catch (loginError: unknown) {
-      setError(loginError instanceof Error ? loginError.message : "Something went wrong");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -59,51 +79,94 @@ export default function Login() {
 
   return (
     <CollegeLoginShell>
-      {error ? (
-        <p className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-600 dark:text-red-300">
-          {error}
-        </p>
-      ) : null}
+      <div className="mx-auto w-full max-w-md">
+        <div className="rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur-xl">
+          
+          {/* heading */}
+          <div className="mb-8">
+ 
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <label className="block space-y-2 text-sm text-[var(--muted)]">
-          <span>Sign in as</span>
-          <CollegeSelect
-            value={role}
-            onChange={(e) => {
-              setRole(e.target.value);
-              setIdentifier("");
-            }}
-          >
-            <option value="student">Student</option>
-            <option value="teacher">Faculty / Teacher</option>
-          </CollegeSelect>
-        </label>
+            <h1 className="text-3xl text-center font-semibold tracking-tight text-white">
+              Welcome back
+            </h1>
 
-        <label className="block space-y-2 text-sm text-[var(--muted)]">
-          <span>{role === "student" ? "Roll number" : "Faculty email"}</span>
-          <CollegeInput
-            type={role === "student" ? "text" : "email"}
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            required
-          />
-        </label>
+          </div>
 
-        <label className="block space-y-2 text-sm text-[var(--muted)]">
-          <span>Password</span>
-          <CollegeInput
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+          {/* error */}
+          {error && (
+            <div className="mb-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+              {error}
+            </div>
+          )}
 
-        <CollegeButton type="submit" variant="primary" className="w-full py-3" disabled={loading}>
-          {loading ? "Signing in…" : "Sign in securely"}
-        </CollegeButton>
-      </form>
+          {/* form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+
+            <div>
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
+                Role
+              </label>
+
+              <CollegeSelect
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  setIdentifier("");
+                }}
+                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white"
+              >
+                <option value="student">Student</option>
+                <option value="teacher">Faculty / Teacher</option>
+              </CollegeSelect>
+            </div>
+
+            <div>
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
+                {role === "student"
+                  ? "Roll Number"
+                  : "Faculty Email"}
+              </label>
+
+              <CollegeInput
+                type={role === "student" ? "text" : "email"}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                required
+                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white placeholder:text-white/20"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-white/40">
+                Password
+              </label>
+
+              <CollegeInput
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="h-12 rounded-2xl border border-white/10 bg-white/5 text-white placeholder:text-white/20"
+              />
+            </div>
+
+            <CollegeButton
+              type="submit"
+              disabled={loading}
+              className="mt-2 h-12 w-full rounded-2xl cursor-pointer bg-white text-black transition-all hover:bg-white/90"
+            >
+              {loading ? "Signing in..." : "Sign in"}
+            </CollegeButton>
+          </form>
+
+          {/* footer */}
+          <div className="mt-6 border-t border-white/10 pt-5 text-center">
+            <p className="text-xs text-white/35">
+              Authorized students & faculty only
+            </p>
+          </div>
+        </div>
+      </div>
     </CollegeLoginShell>
   );
 }

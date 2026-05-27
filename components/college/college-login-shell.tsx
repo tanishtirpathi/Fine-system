@@ -3,12 +3,9 @@
 import type { ReactNode } from "react";
 import { COLLEGE } from "@/lib/college-brand";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { SecureBadge } from "@/components/college/college-ui";
-
 export function CollegeLoginShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--background)] font-[family-name:var(--font-poppins)] text-[var(--foreground)]">
-      <div className="h-1.5 bg-[var(--accent)]" aria-hidden />
 
       <div className="mx-auto flex max-w-lg flex-col gap-8 px-4 py-10 sm:py-14">
         <div className="flex items-center justify-between gap-4">
@@ -30,14 +27,11 @@ export function CollegeLoginShell({ children }: { children: ReactNode }) {
         </div>
 
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-[var(--foreground)]">Portal sign in</h1>
-          <p className="mt-2 text-sm text-[var(--muted)]">{COLLEGE.systemName}</p>
-          <div className="mt-3 flex justify-center">
-            <SecureBadge />
-          </div>
+          <h1 className="text-2xl font-light font-serif italic  text-[var(--foreground)]">Portal sign in</h1>
+
         </div>
 
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-lg shadow-black/5 dark:shadow-black/25 sm:p-8">
+        <div className="rounded-2xl p-6 shadow-lg shadow-black/5 dark:shadow-black/25 sm:p-8">
           {children}
         </div>
 
