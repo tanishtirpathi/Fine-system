@@ -29,58 +29,40 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://fine.tanishtirpathi.me"),
 
   title: {
-    default: `${COLLEGE.name}`,
+    default: COLLEGE.name,
     template: `%s | ${COLLEGE.name}`,
   },
 
   description: COLLEGE.systemName,
 
-  applicationName: COLLEGE.name,
-  authors: [{ name: "Fine Guard Team" }],
-  creator: "Fine Guard",
-  publisher: "Fine Guard",
-
-  keywords: [
-    "Fine Guard",
-    "Fine System",
-    "Fine Management System",
-    "Student Fine Portal",
-    "College Clearance",
-    "Educational Management",
-    "FGI",
-    "Student Portal"
-  ],
-
-  icons: {
-    icon: "/logo/logo-light.webp",
-    shortcut: "/logo/logo-light.webp",
-    apple: "/logo/logo-light.webp",
-  },
-
   openGraph: {
-    type: "website",
-    url: "https://fine.tanishtirpathi.me/",
-    title: `${COLLEGE.name}`,
+    title: COLLEGE.name,
     description: COLLEGE.systemName,
-    siteName: `${COLLEGE.name}`,
+    url: "https://fine.tanishtirpathi.me",
+    siteName: COLLEGE.name,
     images: [
       {
-        url: "/images/bg-main.png",
+        url: "https://fine.tanishtirpathi.me/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Fine Guard Preview",
+        alt: "Fine Guard",
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
 
   twitter: {
     card: "summary_large_image",
-     title: `${COLLEGE.name}`,
-     description: COLLEGE.systemName,
-    images: ["/images/bg-main.png"],
+    title: COLLEGE.name,
+    description: COLLEGE.systemName,
     creator: "@tanishtirpathi",
+    images: ["https://fine.tanishtirpathi.me/og-image.png"],
   },
-  category: "technology",
+
+  icons: {
+    icon: "/logo/logo-light.webp",
+  },
 };
 
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
