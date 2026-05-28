@@ -186,7 +186,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                 {isLoggingOut ? "Signing out…" : "Sign out"}
               </CollegeButton>
             </div>
-          </div>
+          </div>  
 
           <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[400px] xl:grid-cols-2">
             <CollegeStatCard label="Pending amount" value={formatCurrency(pendingAmount)} />
@@ -256,10 +256,10 @@ export default function DashboardClient({ user, students: initialStudents }: Das
             </label>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-xl border border-[var(--border)]">
+          <div className="mt-6 overflow-hidden rounded-xl border border-[var(--muted)]/30">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-[var(--border)]">
-                <thead className="bg-[var(--surface-muted)] text-left text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+              <table className="min-w-full divide-y divide-[var(--foreground)]/40">
+                <thead className="bg-[var(--muted)]/20 text-left text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
                   <tr>
                     <th className="px-4 py-3">Student</th>
                     <th className="px-4 py-3">Department</th>
@@ -275,7 +275,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                         student.fineAmount === 0 ? "paid" : student.fineStatus;
 
                       return (
-                        <tr key={student.rollNo} className="transition hover:bg-[var(--surface-muted)]">
+                        <tr key={student.rollNo} className="transition hover:bg-[var(--muted)]/20">
                           <td className="px-4 py-4">
                             <button
                               type="button"
@@ -332,7 +332,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                 topPendingStudents.map((student) => (
                   <div
                     key={student.rollNo}
-                    className="rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] p-4"
+                    className="rounded-xl border border-[var(--muted)]/20 bg-[var(--foreground)]/10 p-4"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <button
@@ -340,7 +340,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                         onClick={() => setEditingStudent(student)}
                         className="text-left hover:text-[var(--accent)]"
                       >
-                        <div className="font-medium text-[var(--foreground)]">{student.name}</div>
+                        <div className="font-medium font-serif italic text-[var(--foreground)]">{student.name}</div>
                         <div className="text-xs text-[var(--muted)]">
                           {student.department} • Semester {student.semester}
                         </div>
@@ -349,9 +349,9 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                         {formatCurrency(student.fineAmount)}
                       </div>
                     </div>
-                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--border)]">
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--foreground)]/20">
                       <div
-                        className="h-full rounded-full bg-[var(--accent)]"
+                        className="h-full rounded-full bg-[var(--foreground)]"
                         style={{ width: `${Math.min(100, Math.max(12, student.fineAmount / 10))}%` }}
                       />
                     </div>
@@ -390,7 +390,8 @@ function StatusBadge({
 
 function InsightRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
+    <div className="flex items-center justify-between rounded-xl border border-[var(--muted)]/20
+     bg-[var(--muted)]/30 px-4 py-3">
       <span className="text-[var(--muted)]">{label}</span>
       <span className="font-semibold text-[var(--foreground)]">{value}</span>
     </div>

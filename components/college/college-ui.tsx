@@ -68,7 +68,10 @@ export function CollegeInput({
 }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      className={`w-full rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3 text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 ${className}`}
+      className={`w-full rounded-xl border border-[var(--muted)]/20 bg-[var(--foreground)]/10 
+        px-4 py-3 text-[var(--foreground)] outline-none transition 
+        placeholder:text-[var(--muted)] focus:border-[var(--muted)] 
+        focus:ring-2 focus:ring-[var(--muted)]/20 ${className}`}
       {...props}
     />
   );
@@ -81,7 +84,9 @@ export function CollegeSelect({
 }: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
-      className={`w-full rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3 text-[var(--foreground)] outline-none transition focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/20 ${className}`}
+      className={`w-full rounded-xl border border-[var(--muted)]/20 bg-[var(--foreground)]/10
+         px-4 py-3 text-[var(--foreground)] outline-none transition focus:border-[var(--muted)] 
+         focus:ring-2 focus:ring-[var(--muted)]/20 ${className}`}
       {...props}
     >
       {children}

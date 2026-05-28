@@ -1,5 +1,5 @@
-import mongoose, { Schema } from 'mongoose';
-import { Teacher } from '../types/teacher.types';
+import mongoose, { Schema, models, model } from "mongoose";
+import { Teacher } from "../types/teacher.types";
 
 const TeacherSchema: Schema = new Schema({
   name: { type: String, required: true },
@@ -9,6 +9,7 @@ const TeacherSchema: Schema = new Schema({
   department: { type: String, required: true },
 });
 
-const TeacherModel = mongoose.model<Teacher>('Teacher', TeacherSchema);
+const TeacherModel =
+  models.Teacher || model<Teacher>("Teacher", TeacherSchema);
 
 export default TeacherModel;
