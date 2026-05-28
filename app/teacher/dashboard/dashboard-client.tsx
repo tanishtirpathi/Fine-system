@@ -268,7 +268,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                     <th className="px-4 py-3">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--border)] bg-[var(--surface)] text-sm">
+                <tbody className="divide-y divide-[var(--foreground)]/20 bg-[var(--surface)] text-sm">
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student) => {
                       const displayStatus =
@@ -282,7 +282,8 @@ export default function DashboardClient({ user, students: initialStudents }: Das
                               onClick={() => setEditingStudent(student)}
                               className="group text-left"
                             >
-                              <div className="font-medium text-[var(--foreground)] underline-offset-2 group-hover:text-[var(--accent)] group-hover:underline">
+                              <div className="font-medium text-[var(--foreground)] 
+                              underline-offset-2 group-hover:text-[var(--accent)] group-hover:underline">
                                 {student.name}
                               </div>
                               <div className="text-xs text-[var(--muted)]">Roll No: {student.rollNo}</div>

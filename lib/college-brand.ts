@@ -4,4 +4,5 @@ export const COLLEGE = {
   tagline: "Student Fine & Clearance Portal",
   systemName: "Fine Management System",
   academicYear: "2026–27",
+  logo: "/logo/logo.webp",
 } as const;
