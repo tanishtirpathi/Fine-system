@@ -74,7 +74,8 @@ export default function HomePage() {
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <button
               onClick={() => router.push("/login")}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[var(--accent)] px-8 py-4 text-sm font-semibold text-[var(--accent-foreground)] transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-[var(--foreground)] px-8 py-4 text-sm font-semibold 
+              text-[var(--background)] transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl"
             >
               <span className="relative z-10">Login on dashboard</span>
 
