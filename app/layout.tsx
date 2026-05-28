@@ -26,8 +26,61 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${COLLEGE.name} | Fine Portal`,
+  metadataBase: new URL("https://fineguard.tanishtirpathi.me"),
+
+  title: {
+    default: `${COLLEGE.name}`,
+    template: `%s | ${COLLEGE.name}`,
+  },
+
   description: COLLEGE.systemName,
+
+  applicationName: COLLEGE.name,
+  authors: [{ name: "Fine Guard Team" }],
+  creator: "Fine Guard",
+  publisher: "Fine Guard",
+
+  keywords: [
+    "Fine Guard",
+    "Fine System",
+    "Fine Management System",
+    "Student Fine Portal",
+    "College Clearance",
+    "Educational Management",
+    "FGI",
+    "Student Portal"
+  ],
+
+  icons: {
+    icon: "/logo/logo-light.webp",
+    shortcut: "/logo/logo-light.webp",
+    apple: "/logo/logo-light.webp",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "https://www.fineguard.tanishtirpathi.me",
+    title: `${COLLEGE.name}`,
+    description: COLLEGE.systemName,
+    siteName: `${COLLEGE.name}`,
+    images: [
+      {
+        url: "/images/bg-main.png",
+        width: 1200,
+        height: 630,
+        alt: "Fine Guard Preview",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+     title: `${COLLEGE.name}`,
+     description: COLLEGE.systemName,
+    images: ["/images/bg-main.png"],
+    creator: "@tanishtirpathi",
+  },
+  category: "technology",
 };
 
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
