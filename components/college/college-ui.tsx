@@ -9,7 +9,7 @@ export function CollegePanel({
 }) {
   return (
     <section
-      className={`rounded-2xl  p-6 sm:p-8 ${className}`}
+      className={`rounded-lg  p-6 sm:p-8 ${className}`}
     >
       {children}
     </section>
@@ -18,7 +18,8 @@ export function CollegePanel({
 
 export function CollegeBadge({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/30 bg-[var(--accent-muted)] px-3 py-1 text-xs font-medium uppercase tracking-wider text-[var(--accent)]">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/30 
+    bg-[var(--accent-muted)] px-3 py-1 text-xs font-medium uppercase tracking-wider text-[var(--accent)]">
       {children}
     </span>
   );
@@ -44,12 +45,12 @@ export function CollegeButton({
   className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const base =
-    "rounded-xl px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60";
+    "rounded-md px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60";
   const variants = {
     primary:
-      "border border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-foreground)] hover:opacity-90",
+      "border border-[var(--accent)] bg-[var(--foreground)] text-[var(--background)] hover:opacity-90",
     secondary:
-      "border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--foreground)] hover:border-[var(--accent)]/50",
+      "border border-[var(--foreground)]/20 bg-[var(--muted)]/20 text-[var(--foreground)] hover:border-[var(--accent)]/50",
     ghost:
       "border border-transparent text-[var(--muted)] hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)]",
   };
@@ -90,7 +91,8 @@ export function CollegeSelect({
 
 export function CollegeStatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] border-l-4 border-l-[var(--accent)] bg-[var(--surface-muted)] p-4">
+    <div className="rounded-xl border border-[var(--foreground)]/20 border-l-4 
+    border-l-[var(--foreground)] bg-[var(--muted)]/10 p-4">
       <div className="text-xs font-medium uppercase tracking-wider text-[var(--muted)]">{label}</div>
       <div className="mt-2 text-2xl font-semibold tabular-nums text-[var(--foreground)]">{value}</div>
     </div>
@@ -99,7 +101,7 @@ export function CollegeStatCard({ label, value }: { label: string; value: string
 
 export function CollegeChip({ children }: { children: ReactNode }) {
   return (
-    <span className="rounded-full border border-[var(--border)] bg-[var(--surface-muted)] px-3 py-1 text-sm text-[var(--muted)]">
+    <span className="rounded-lg border border-[var(--foreground)]/20 bg-[var(--muted)]/20 px-3 py-1 text-sm text-[var(--muted)]">
       {children}
     </span>
   );

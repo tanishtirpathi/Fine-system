@@ -162,9 +162,6 @@ export default function DashboardClient({ user, students: initialStudents }: Das
               <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">
                 Fine management overview
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-                Students are sorted by highest fine first. Click a name to edit their record.
-              </p>
             </div>
             <div className="flex flex-wrap gap-2">
               <CollegeChip>{teacherName}</CollegeChip>
@@ -172,7 +169,7 @@ export default function DashboardClient({ user, students: initialStudents }: Das
               <CollegeChip>{totalStudents} enrolled</CollegeChip>
             </div>
             <div className="flex flex-wrap gap-2 pt-1">
-              <CollegeButton variant="secondary" onClick={() => router.push("/teacher/profile")}>
+              <CollegeButton variant="primary" onClick={() => router.push("/teacher/profile")}>
                 Profile
               </CollegeButton>
               <CollegeButton variant="primary" onClick={() => router.push("/teacher/studentadd")}>
