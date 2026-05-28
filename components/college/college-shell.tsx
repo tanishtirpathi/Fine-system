@@ -48,7 +48,7 @@ export default function CollegeShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>
 
-      <footer className="mt-auto border-t border-[var(--border)] bg-[var(--surface-muted)]">
+      <footer className="mt-auto mx-40">
         <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 text-center text-xs text-[var(--muted)] sm:flex-row sm:justify-between sm:text-left sm:px-6 lg:px-8">
           <span>{COLLEGE.systemName}</span>
           <span>© {new Date().getFullYear()} {COLLEGE.name}. All rights reserved.</span>

@@ -1,6 +1,8 @@
 import { getMe } from "@/lib/server/api";
 import { CollegeBadge, CollegePanel } from "@/components/college/college-ui";
 import { ShieldCheck, Building2, User2, Hash } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { HexagonPattern } from "@/components/ui/hexagon-pattern";
 
 export default async function TeacherProfilePage() {
   const user = await getMe();
@@ -15,9 +17,15 @@ export default async function TeacherProfilePage() {
 
   return (
     <div className=" mx-auto max-w-2xl px-4 py-8">
+    <HexagonPattern  radius={40}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )}  />
       <CollegePanel className="relative overflow-hidden
        bg-[var(--surface)]/80 mx-10  backdrop-blur-xl">
-        
+           
         {/* Background Glow */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-20 right-0 h-60 w-60 rounded-full bg-[var(--accent)]/10 blur-3xl" />

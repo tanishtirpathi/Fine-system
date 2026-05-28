@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { Student } from "@/types/student.types";
 import { getStudentDashboard } from "@/lib/client/api";
 import { COLLEGE } from "@/lib/college-brand";
+import { HexagonPattern } from "@/components/ui/hexagon-pattern"
+import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
   CollegePanel,
@@ -120,15 +122,20 @@ export default function StudentDashboardPage() {
 
   return (
     <div className="min-h-screen mx-15 bg-[var(--background)] text-[var(--foreground)]">
-      <header className="sticky top-0 z-40  border-[var(--foreground)] bg-[var(--background)]/90 backdrop-blur-md">
+      <HexagonPattern radius={40}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )} />      <header className="sticky top-0 z-40  border-[var(--foreground)] bg-[var(--background)]/90 backdrop-blur-md">
         <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6">
           <div className="flex flex-col gap-4 rounded-2xl border border-[var(--foreground)]/10 
           dark:bg-white/10 bg-black/10 px-4 py-2 shadow-sm shadow-black/5 dark:shadow-black/20 sm:px-5">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center shadow-lg">
-                           <CollegeLogo />
-                       </div>
+                <div className="flex items-center justify-center shadow-lg">
+                  <CollegeLogo />
+                </div>
                 <div>
                   <p className="text-sm font-semibold text-[var(--foreground)]">{COLLEGE.name}</p>
                 </div>
@@ -147,7 +154,7 @@ export default function StudentDashboardPage() {
                 <CollegeButton variant="primary" onClick={logout} disabled={isLoggingOut}>
                   {isLoggingOut ? "Signing out…" : "Sign out"}
                 </CollegeButton>
-                                <ThemeToggle />
+                <ThemeToggle />
 
               </div>
             </div>

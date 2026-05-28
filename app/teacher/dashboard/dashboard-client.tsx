@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 import type { Student } from "@/types/student.types";
 import { COLLEGE } from "@/lib/college-brand";
 import { clearAllStudentFines } from "@/lib/client/api";
+import { HexagonPattern } from "@/components/ui/hexagon-pattern"
+import { cn } from "@/lib/utils";
 import {
   CollegeBadge,
   CollegeButton,
@@ -155,6 +157,12 @@ export default function DashboardClient({ user, students: initialStudents }: Das
       ) : null}
 
       <CollegePanel>
+       <HexagonPattern  radius={40}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )}  />
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-4">
             <CollegeBadge>Faculty dashboard • AY {COLLEGE.academicYear}</CollegeBadge>

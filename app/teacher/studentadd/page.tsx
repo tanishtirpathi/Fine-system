@@ -8,7 +8,8 @@ import {
   CollegeInput,
   CollegePanel,
 } from "@/components/college/college-ui";
-
+import { cn } from "@/lib/utils";
+import { HexagonPattern } from "@/components/ui/hexagon-pattern"
 type FormState = {
   name: string;
   rollNo: string;
@@ -68,11 +69,16 @@ export default function StudentAddPage() {
   return (
     <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
       <CollegePanel>
-        <CollegeBadge>New enrollment</CollegeBadge>
+             <HexagonPattern  radius={40}
+              x={-1}
+              y={-1}
+              className={cn(
+                "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+              )}  />
         <h2 className="mt-4 text-2xl font-semibold text-[var(--foreground)] sm:text-3xl">
           Register student
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
+        <p className="mt-3 max-w-2xl text-sm leading-6 font-serif italic  text-[var(--muted)]">
           Add a student to the college registry. Semester and fine defaults are applied by the system.
         </p>
 
@@ -114,29 +120,12 @@ export default function StudentAddPage() {
 
       <aside className="space-y-6">
         <CollegePanel>
-          <h3 className="text-lg font-semibold text-[var(--foreground)]">Enrollment policy</h3>
+          <h3 className="text-lg font-semibold font-serif italic text-[var(--foreground)]">Enrollment policy</h3>
           <div className="mt-4 space-y-3 text-sm">
-            <InfoRow title="API route" value="POST /api/signup" />
             <InfoRow title="Semester" value="Default: 1" />
             <InfoRow title="Fine amount" value="Default: ₹0" />
             <InfoRow title="Fine status" value="Unpaid" />
-            <InfoRow title="Clearance" value="Pending" />
           </div>
-        </CollegePanel>
-
-        <CollegePanel>
-          <h3 className="text-lg font-semibold text-[var(--foreground)]">Guidelines</h3>
-          <ul className="mt-4 space-y-3 text-sm text-[var(--muted)]">
-            <li className="rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
-              Use a unique roll number per student.
-            </li>
-            <li className="rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
-              Assign department codes consistent with college records.
-            </li>
-            <li className="rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
-              Update fines and clearance from the faculty dashboard after registration.
-            </li>
-          </ul>
         </CollegePanel>
       </aside>
     </div>

@@ -4,21 +4,30 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import {
 	CollegePanel,
 } from "@/components/college/college-ui";
+import {cn} from "@/lib/utils";
 import { COLLEGE } from "@/lib/college-brand";
+import { HexagonPattern } from "@/components/ui/hexagon-pattern"
 import { ArrowLeft, Phone, ShieldCheck, QrCode } from "lucide-react";
 import { CollegeLogo } from "@/components/college/college-shell";
 
 export default async function StudentPayPage() {
 	return (
-		<div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)] mx-20">
+		<div className="relative min-h-screen overflow-hidden bg-[var(--background)] 
+		text-[var(--foreground)] ">
 			{/* Background */}
-			<div className="pointer-events-none absolute inset-0 -z-10">
+			 <HexagonPattern  radius={40}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )}  />
+			<div className="pointer-events-none absolute inset-0 -z-10 mx-20">
 				<div className="absolute left-[-120px] top-[-120px] h-[320px] w-[320px] rounded-full bg-white/5 blur-3xl" />
 				<div className="absolute bottom-[-140px] right-[-100px] h-[340px] w-[340px] rounded-full bg-white/5 blur-3xl" />
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_35%)]" />
 			</div>
 
-			<header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
+			<header className="mx-auto flex w-full max-w-6xl  items-center justify-between px-40 py-5 sm:px-6">
 				<div className="flex items-center gap-4">
 					<div className="flex items-center justify-center shadow-lg">
 						<CollegeLogo />
@@ -40,7 +49,7 @@ export default async function StudentPayPage() {
 				</div>
 			</header>
 
-			<main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pb-16 pt-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:pt-10">
+			<main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:pt-10">
 				{/* Left Side */}
 				<CollegePanel className="relative flex-1 overflow-hidden  bg-white/[0.03] p-8 backdrop-blur-2xl">
 					<div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-white/5 blur-3xl" />
@@ -87,7 +96,8 @@ export default async function StudentPayPage() {
 							Scan & Pay
 						</div>
 
-						<div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white p-5 shadow-lg shadow-black/30">
+						<div className="relative overflow-hidden rounded-[2rem]
+						 border border-white/10 bg-white p-5 shadow-lg shadow-black/10">
 							<div className="absolute inset-0" />
 
 							<Image
