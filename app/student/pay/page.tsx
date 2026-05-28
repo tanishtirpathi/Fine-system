@@ -6,10 +6,11 @@ import {
 } from "@/components/college/college-ui";
 import { COLLEGE } from "@/lib/college-brand";
 import { ArrowLeft, Phone, ShieldCheck, QrCode } from "lucide-react";
+import { CollegeLogo } from "@/components/college/college-shell";
 
 export default async function StudentPayPage() {
 	return (
-		<div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+		<div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)] mx-20">
 			{/* Background */}
 			<div className="pointer-events-none absolute inset-0 -z-10">
 				<div className="absolute left-[-120px] top-[-120px] h-[320px] w-[320px] rounded-full bg-white/5 blur-3xl" />
@@ -19,8 +20,8 @@ export default async function StudentPayPage() {
 
 			<header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-5 sm:px-6">
 				<div className="flex items-center gap-4">
-					<div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl">
-						<ShieldCheck className="h-5 w-5 text-white" />
+					<div className="flex items-center justify-center shadow-lg">
+						<CollegeLogo />
 					</div>
 
 					<div>
@@ -34,7 +35,7 @@ export default async function StudentPayPage() {
 				</div>
 
 				<div className="flex items-center gap-3">
-					
+
 					<ThemeToggle />
 				</div>
 			</header>
@@ -121,7 +122,7 @@ export default async function StudentPayPage() {
 							</div>
 						</div>
 
-						
+
 					</div>
 				</CollegePanel>
 			</main>

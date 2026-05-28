@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { COLLEGE } from "@/lib/college-brand";
+import { CollegeLogo } from "@/components/college/college-shell";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Meteors } from "@/components/ui/meteors"
 export default function HomePage() {
@@ -26,8 +27,9 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface)] backdrop-blur-xl shadow-lg">
-            <div className="h-4 w-4 rounded-full bg-[var(--accent)] shadow-[0_0_20px_var(--accent)]" />
+          <div className="flex items-center justify-center shadow-lg">
+              <CollegeLogo />
+
           </div>
 
           <div>

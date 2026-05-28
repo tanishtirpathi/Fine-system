@@ -58,18 +58,26 @@ export default function CollegeShell({ children }: { children: ReactNode }) {
   );
 }
 
-function CollegeLogo() {
+export function CollegeLogo() {
   return (
     <div
       className="flex shrink-0 items-center justify-center rounded-md border border-[var(--background)]/30
-       bg-black shadow-sm overflow-hidden"
+       shadow-sm overflow-hidden"
     >
       <Image
-        src={COLLEGE.logo}
+        src={COLLEGE.logo.light}
         alt={`${COLLEGE.name} Logo`}
         width={32}
         height={32}
-        className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-110"
+        className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-110 dark:hidden"
+        priority
+      />
+      <Image
+        src={COLLEGE.logo.dark}
+        alt={`${COLLEGE.name} Logo`}
+        width={32}
+        height={32}
+        className="hidden h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-110 dark:block"
         priority
       />
     </div>

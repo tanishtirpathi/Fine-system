@@ -12,6 +12,7 @@ import {
   CollegeSelect,
   CollegeButton,
 } from "@/components/college/college-ui";
+import { CollegeLogo } from "@/components/college/college-shell";
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -125,28 +126,29 @@ export default function StudentDashboardPage() {
           dark:bg-white/10 bg-black/10 px-4 py-2 shadow-sm shadow-black/5 dark:shadow-black/20 sm:px-5">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-muted)] text-[var(--accent)]">
-                  <ShieldIcon />
-                </div>
+                  <div className="flex items-center justify-center shadow-lg">
+                           <CollegeLogo />
+                       </div>
                 <div>
                   <p className="text-sm font-semibold text-[var(--foreground)]">{COLLEGE.name}</p>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <ThemeToggle />
                 <Link
                   href="/student/pay"
-                  className="inline-flex items-center gap-2 rounded-xl border
+                  className="inline-flex items-center gap-2 rounded-md border
                    border-[var(--foreground)] bg-[var(--foreground)] px-4 py-2 text-sm
                     font-medium text-[var(--background)] transition hover:opacity-90"
                 >
                   <PayIcon />
                   Pay fine
                 </Link>
-                <CollegeButton variant="ghost" onClick={logout} disabled={isLoggingOut}>
+                <CollegeButton variant="primary" onClick={logout} disabled={isLoggingOut}>
                   {isLoggingOut ? "Signing out…" : "Sign out"}
                 </CollegeButton>
+                                <ThemeToggle />
+
               </div>
             </div>
 
