@@ -26,7 +26,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fineguard.tanishtirpathi.me"),
+  metadataBase: new URL("https://fine.tanishtirpathi.me"),
 
   title: {
     default: `${COLLEGE.name}`,
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://www.fineguard.tanishtirpathi.me",
+    url: "https://fine.tanishtirpathi.me/",
     title: `${COLLEGE.name}`,
     description: COLLEGE.systemName,
     siteName: `${COLLEGE.name}`,
